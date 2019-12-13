@@ -31,7 +31,7 @@ public class Dictionary {
             Log.i("Scrabble", line);
             wordList = new String[Integer.parseInt(line)];
             int i = 0;
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null && i < 50000) {
                 Log.i("Scrabble",String.valueOf(i));
                 wordList[i] = line;
                 i++;
@@ -50,6 +50,8 @@ public class Dictionary {
         LinkedList<Character> list = new LinkedList<Character>();
         LinkedList<Character> tabChar = new LinkedList<Character>();
 
+        int nbJoker = 0;
+
         word = replaceFrenchCharacter(word);
         letters = replaceFrenchCharacter(String.valueOf(letters)).toCharArray();
 
@@ -65,19 +67,59 @@ public class Dictionary {
             if (tabChar.contains(ch)) {
                 tabChar.remove(Character.valueOf(ch));
             }
+            if(ch == '*')
+            {
+                nbJoker++;
+            }
         }
 
 
-        if (tabChar.size() > 0) {
+        if (tabChar.size() > nbJoker) {
             return false;
         } else {
             return true;
         }
     }
 
+    public static char[] getComposition(String word, char[] letters)
+    {
+        LinkedList<Character> list = new LinkedList<Character>();
+        LinkedList<Character> tabChar = new LinkedList<Character>();
+
+        word = replaceFrenchCharacter(word);
+        letters = replaceFrenchCharacter(String.valueOf(letters)).toCharArray();
+
+        for (char c : letters) {
+            list.add(c);
+        }
+
+        for (char ch : list) {
+            if (word.contains(""+ch)) {
+                tabChar.add(Character.valueOf(ch));
+            }
+        }
+
+        char[] array = new char[list.size()];
+        int i = 0;
+        for(char ch : tabChar)
+        {
+            array[i] = ch;
+            i++;
+        }
+
+        for(; i < list.size()-tabChar.size();i++)
+        {
+            array[i] = '*';
+        }
+
+        return array;
+    }
+
     public List<String> getWordsThatCanBeComposed(char[] letters) {
         LinkedList<String> result = new LinkedList<>();
         for (String word : wordList) {
+            Log.i("Scrabble",word);
+            //wordList[wordList.indexOf(word)] = fr
             if (mayBeComposed(word, letters))
                 result.add(word);
         }
@@ -89,5 +131,11 @@ public class Dictionary {
         s = s.toLowerCase();
         s = Normalizer.normalize(s,Normalizer.Form.NFD);
         return s.replaceAll("[\\p{InCOMBINING_DIACRITICAL_MARKS}]","");
+    }
+
+    public static char replaceFrenchCharacter(char s) {
+        String n = String.valueOf(s);
+        n = replaceFrenchCharacter(n);
+        return n.charAt(0);
     }
 }

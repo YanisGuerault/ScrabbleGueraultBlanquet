@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,10 +30,15 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                char[] ch = {'b', 'j', 'o', 'o', 'n', 'r', '*'};
+                ScrabbleComparator sc = new ScrabbleComparator(ch);
                 Dictionary dic = new Dictionary(getApplicationContext());
-                char[] ch = {'b', 'j', 'o', 'o', 'n', 'r', 'ü'};
                 List<String> word = dic.getWordsThatCanBeComposed(ch);
+                String[] newWord = word.toArray(new String[0]);
                 Log.i("Scrabble", String.valueOf(word));
+                Arrays.sort(newWord,sc);
+                Log.i("Scrabble", String.valueOf(newWord));
+
             };
         });
         thread.run();
