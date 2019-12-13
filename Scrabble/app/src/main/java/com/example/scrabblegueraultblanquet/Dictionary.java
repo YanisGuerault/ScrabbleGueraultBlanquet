@@ -30,11 +30,6 @@ public class Dictionary {
 
     public boolean isValidWord( String word ) {
         sort(wordList);
-        if(binarySearch(wordList, key)!=null){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return binarySearch(wordList, word) >= 0;
     }
 }
