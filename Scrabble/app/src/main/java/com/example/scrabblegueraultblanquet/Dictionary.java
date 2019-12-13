@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import static java.util.Arrays.binarySearch;
+import static java.util.Arrays.sort;
+
 public class Dictionary {
 
     public String[] wordList;
@@ -26,6 +29,12 @@ public class Dictionary {
     }
 
     public boolean isValidWord( String word ) {
-
+        sort(wordList);
+        if(binarySearch(wordList, key)!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
