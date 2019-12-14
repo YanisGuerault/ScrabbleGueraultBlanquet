@@ -76,11 +76,11 @@ public class ScrabbleComparator implements Comparator<String> {
 
         if(scoreO1 < scoreO2)
         {
-            return -1;
+            return 1;
         }
         else if (scoreO1 > scoreO2)
         {
-            return 1;
+            return -1;
         }
         else
         {

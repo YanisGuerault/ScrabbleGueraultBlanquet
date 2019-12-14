@@ -3,6 +3,7 @@ package com.example.scrabblegueraultblanquet;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final Handler handler = new Handler();
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +30,24 @@ public class MainActivity extends AppCompatActivity {
             requestPermissions(new String[] {Manifest.permission.READ_SMS}, 1);
         }
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                char[] ch = {'b', 'j', 'o', 'o', 'n', 'r', '*'};
-                ScrabbleComparator sc = new ScrabbleComparator(ch);
-                Dictionary dic = new Dictionary(getApplicationContext());
-                List<String> word = dic.getWordsThatCanBeComposed(ch);
-                String[] newWord = word.toArray(new String[0]);
-                Log.i("Scrabble", String.valueOf(word));
-                Arrays.sort(newWord,sc);
-                Log.i("Scrabble", String.valueOf(newWord));
-
-            };
-        });
-        thread.run();
+        handler.postDelayed(Thread, 1000);
     }
+
+    private final Runnable Thread = new Runnable() {
+        @Override
+        public void run() {
+            char[] ch = {'c','l','a','v','i','r', '*'};
+            ScrabbleComparator sc = new ScrabbleComparator(ch);
+            Dictionary dic = new Dictionary(getApplicationContext());
+            List<String> word = dic.getWordsThatCanBeComposed(ch);
+            String[] newWord = listToArray(word);
+            Arrays.sort(newWord,sc);
+            for(String s : newWord)
+            {
+                Log.i("Scrabble", s + " : " + sc.wordValue(s));
+            }
+        }
+    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -60,5 +65,12 @@ public class MainActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 break;
         }
+    }
+
+    public static  <T> String[] listToArray(List<T> list) {
+        String [] array = new String[list.size()];
+        for (int i = 0; i < array.length; i++)
+            array[i] = list.get(i).toString();
+        return array;
     }
 }

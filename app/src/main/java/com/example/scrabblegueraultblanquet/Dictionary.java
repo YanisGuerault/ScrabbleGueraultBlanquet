@@ -28,21 +28,24 @@ public class Dictionary {
         String line;
         try {
             line = br.readLine();
+            int max = 300000;
             Log.i("Scrabble", line);
-            wordList = new String[Integer.parseInt(line)];
+            wordList = new String[max];
             int i = 0;
-            while ((line = br.readLine()) != null && i < 50000) {
+
+            while ((line = br.readLine()) != null && i < max) {
                 Log.i("Scrabble",String.valueOf(i));
                 wordList[i] = line;
                 i++;
             }
+
+            sort(wordList);
         } catch (Exception e) {
             Log.e("Scrabble","Error : "+e.getMessage());
         }
     }
 
     public boolean isValidWord(String word) {
-        sort(wordList);
         return binarySearch(wordList, word) >= 0;
     }
 
@@ -67,6 +70,7 @@ public class Dictionary {
             if (tabChar.contains(ch)) {
                 tabChar.remove(Character.valueOf(ch));
             }
+
             if(ch == '*')
             {
                 nbJoker++;
@@ -119,7 +123,6 @@ public class Dictionary {
         LinkedList<String> result = new LinkedList<>();
         for (String word : wordList) {
             Log.i("Scrabble",word);
-            //wordList[wordList.indexOf(word)] = fr
             if (mayBeComposed(word, letters))
                 result.add(word);
         }
