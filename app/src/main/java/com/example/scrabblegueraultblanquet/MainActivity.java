@@ -5,6 +5,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -19,6 +21,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final Handler handler = new Handler();
+    private static Dictionary dic;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             char[] ch = {'c','l','a','v','i','r', '*'};
             ScrabbleComparator sc = new ScrabbleComparator(ch);
-            Dictionary dic = new Dictionary(getApplicationContext());
+            dic = new Dictionary(getApplicationContext());
             List<String> word = dic.getWordsThatCanBeComposed(ch);
             String[] newWord = listToArray(word);
             Arrays.sort(newWord,sc);
@@ -72,5 +75,11 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < array.length; i++)
             array[i] = list.get(i).toString();
         return array;
+    }
+
+    public void onSearch(View v){
+        EditText myEdit = findViewById(R.id.edit);
+        List<String> vocabList = dic.getWordsThatCanBeComposed(myEdit.getText().toString().toCharArray());
+
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/classic" android:title="Mode Classique" />
+    <item android:id="@+id/sombre" android:title="Mode Sombre" />
+</menu>
