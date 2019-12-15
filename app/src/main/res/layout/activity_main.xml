@@ -22,12 +22,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Search"
-            android:layout_weight="6"></Button>
+            android:layout_weight="6"
+            android:onClick="onSearch"></Button>
     </LinearLayout>
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/myList"></ListView>
+    <include layout="@layout/list"/>
 
 </LinearLayout>
