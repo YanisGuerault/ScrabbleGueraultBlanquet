@@ -50,6 +50,10 @@ public class Dictionary {
     }
 
     public static boolean mayBeComposed(String word, char[] letters) {
+
+        if(word.length() > letters.length)
+            return false;
+
         LinkedList<Character> list = new LinkedList<Character>();
         LinkedList<Character> tabChar = new LinkedList<Character>();
 
@@ -63,6 +67,8 @@ public class Dictionary {
         }
 
         for (char c : letters) {
+            if(c == '*')
+                nbJoker++;
             list.add(c);
         }
 
@@ -70,19 +76,12 @@ public class Dictionary {
             if (tabChar.contains(ch)) {
                 tabChar.remove(Character.valueOf(ch));
             }
-
-            if(ch == '*')
-            {
-                nbJoker++;
-            }
         }
 
-
-        if (tabChar.size() > nbJoker) {
-            return false;
-        } else {
+        if(tabChar.size()-nbJoker <= 0)
             return true;
-        }
+        else
+            return false;
     }
 
     public static char[] getComposition(String word, char[] letters)
@@ -97,13 +96,14 @@ public class Dictionary {
             list.add(c);
         }
 
-        for (char ch : list) {
-            if (word.contains(""+ch)) {
-                tabChar.add(Character.valueOf(ch));
+        for (char ch : word.toCharArray()) {
+            if (list.contains(ch)) {
+                tabChar.add(ch);
+                list.remove(Character.valueOf(ch));
             }
         }
 
-        char[] array = new char[list.size()];
+        char[] array = new char[word.length()];
         int i = 0;
         for(char ch : tabChar)
         {
@@ -111,7 +111,7 @@ public class Dictionary {
             i++;
         }
 
-        for(; i < list.size()-tabChar.size();i++)
+        for(; i < word.length(); i++)
         {
             array[i] = '*';
         }

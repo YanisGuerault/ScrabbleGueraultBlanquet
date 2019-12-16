@@ -5,7 +5,7 @@ import android.provider.ContactsContract;
 import java.util.Comparator;
 import java.util.Date;
 
-public class ScrabbleComparator implements Comparator<String> {
+public class ScrabbleComparator implements Comparator<Data> {
 
     char[] letters;
 
@@ -49,27 +49,27 @@ public class ScrabbleComparator implements Comparator<String> {
         return nb;
     }
 
-    /*@Override
+    @Override
     public int compare(Data o1, Data o2) {
-        int scoreO1 = wordValue(o1.compose);
-        int scoreO2 = wordValue(o2.compose);
+        int scoreO1 = lettersValue(o1.compose);
+        int scoreO2 = lettersValue(o2.compose);
 
         if(scoreO1 < scoreO2)
         {
-            return -1;
+            return 1;
         }
         else if (scoreO1 > scoreO2)
         {
-            return 1;
+            return -1;
         }
         else
         {
            return 0;
         }
 
-    }*/
+    }
 
-    @Override
+    /*@Override
     public int compare(String o1, String o2) {
         int scoreO1 = wordValue(o1);
         int scoreO2 = wordValue(o2);
@@ -86,5 +86,6 @@ public class ScrabbleComparator implements Comparator<String> {
         {
             return 0;
         }
-    }
+    }*/
+
 }

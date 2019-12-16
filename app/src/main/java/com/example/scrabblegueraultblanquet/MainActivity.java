@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final Handler handler = new Handler();
     private static Dictionary dic;
+    ArrayList<HashMap<String, String>> mainList = new ArrayList<>(0);
+    SimpleAdapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         handler.postDelayed(Thread, 1000);
+        setListView();
     }
 
     private final Runnable Thread = new Runnable() {
@@ -76,25 +79,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSearch(View v) {
-        ArrayList<HashMap<String, String>> mainList = new ArrayList<>(0);
         EditText myEdit = findViewById(R.id.edit);
         char[] letters = myEdit.getText().toString().toCharArray();
+
         List<String> vocabList = dic.getWordsThatCanBeComposed(letters);
         ScrabbleComparator sc = new ScrabbleComparator(letters);
 
-        String[] newWord = listToArray(vocabList);
+        Data[] list = new Data[vocabList.size()];
 
-        Arrays.sort(newWord, sc);
-
-        for (String i : newWord) {
-            HashMap<String, String> list = new HashMap<>();
-            list.put("TxT", i);
-            mainList.add(list);
+        int i = 0;
+        for(String s : vocabList)
+        {
+            list[i] = new Data(s,Dictionary.getComposition(s,letters));
+            i++;
         }
+
+        Arrays.sort(list, sc);
+
+        mainList.clear();
+
+        for (Data data : list) {
+            HashMap<String, String> nlist = new HashMap<>();
+            nlist.put("word", data.word);
+            nlist.put("compose", String.valueOf(data.compose));
+            nlist.put("value", String.valueOf(ScrabbleComparator.lettersValue(data.compose)));
+            mainList.add(nlist);
+        }
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+    void setListView()
+    {
         ListView listView = findViewById(R.id.myList);
 
-        SimpleAdapter contact_adaptater = new SimpleAdapter(getApplicationContext(), mainList, R.layout.item_entry, new String[]{"TxT"}, new int[]{R.id.txt});
+        SimpleAdapter contact_adaptater = new SimpleAdapter(getApplicationContext(), mainList, R.layout.item_entry, new String[]{"word","compose","value"}, new int[]{R.id.word,R.id.compose,R.id.value});
         listView.setAdapter(contact_adaptater);
-
+        adapter = contact_adaptater;
     }
 }
