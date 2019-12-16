@@ -127,47 +127,44 @@ public class MainActivity extends AppCompatActivity {
         adapter = contact_adaptater;
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu,menu);
         return true;
     }
 
-    public void changeForDefault(MenuItem menu){
+    public boolean buttonPress(Menu menu, View view) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+
         LinearLayout basic = findViewById(R.id.game);
 
         TextView word = findViewById(R.id.word);
         TextView compose = findViewById(R.id.compose);
         TextView value = findViewById(R.id.value);
 
-        basic.setBackgroundColor(getResources().getColor(R.color.green));
-        word.setTextColor(getResources().getColor(R.color.black));
-        compose.setTextColor(getResources().getColor(R.color.black));
-        value.setTextColor(getResources().getColor(R.color.black));
-    }
+        switch (view.getId()){
+            case R.id.classic:
+                basic.setBackgroundColor(getResources().getColor(R.color.green));
+                word.setTextColor(getResources().getColor(R.color.black));
+                compose.setTextColor(getResources().getColor(R.color.black));
+                value.setTextColor(getResources().getColor(R.color.black));
+                break;
 
-    public void changeForDark(MenuItem menu){
-        LinearLayout basic = findViewById(R.id.game);
+            case R.id.sombre:
+                basic.setBackgroundColor(getResources().getColor(R.color.black));
+                word.setTextColor(getResources().getColor(R.color.white));
+                compose.setTextColor(getResources().getColor(R.color.white));
+                value.setTextColor(getResources().getColor(R.color.white));
+                break;
 
-        TextView word = findViewById(R.id.word);
-        TextView compose = findViewById(R.id.compose);
-        TextView value = findViewById(R.id.value);
+            case  R.id.autre:
+                basic.setBackgroundColor(getResources().getColor(R.color.blue));
+                word.setTextColor(getResources().getColor(R.color.pink));
+                compose.setTextColor(getResources().getColor(R.color.pink));
+                value.setTextColor(getResources().getColor(R.color.pink));
+                break;
+        }
 
-        basic.setBackgroundColor(getResources().getColor(R.color.black));
-        word.setTextColor(getResources().getColor(R.color.white));
-        compose.setTextColor(getResources().getColor(R.color.white));
-        value.setTextColor(getResources().getColor(R.color.white));
-    }
-
-    public void changeForOther(MenuItem menu){
-        LinearLayout basic = findViewById(R.id.game);
-
-        TextView word = findViewById(R.id.word);
-        TextView compose = findViewById(R.id.compose);
-        TextView value = findViewById(R.id.value);
-
-        basic.setBackgroundColor(getResources().getColor(R.color.blue));
-        word.setTextColor(getResources().getColor(R.color.pink));
-        compose.setTextColor(getResources().getColor(R.color.pink));
-        value.setTextColor(getResources().getColor(R.color.pink));
+        return true;
     }
 }
