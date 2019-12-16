@@ -1,17 +1,25 @@
 package com.example.scrabblegueraultblanquet;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
@@ -117,5 +125,49 @@ public class MainActivity extends AppCompatActivity {
         SimpleAdapter contact_adaptater = new SimpleAdapter(getApplicationContext(), mainList, R.layout.item_entry, new String[]{"word","compose","value"}, new int[]{R.id.word,R.id.compose,R.id.value});
         listView.setAdapter(contact_adaptater);
         adapter = contact_adaptater;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public void changeForDefault(MenuItem menu){
+        LinearLayout basic = findViewById(R.id.game);
+
+        TextView word = findViewById(R.id.word);
+        TextView compose = findViewById(R.id.compose);
+        TextView value = findViewById(R.id.value);
+
+        basic.setBackgroundColor(getResources().getColor(R.color.green));
+        word.setTextColor(getResources().getColor(R.color.black));
+        compose.setTextColor(getResources().getColor(R.color.black));
+        value.setTextColor(getResources().getColor(R.color.black));
+    }
+
+    public void changeForDark(MenuItem menu){
+        LinearLayout basic = findViewById(R.id.game);
+
+        TextView word = findViewById(R.id.word);
+        TextView compose = findViewById(R.id.compose);
+        TextView value = findViewById(R.id.value);
+
+        basic.setBackgroundColor(getResources().getColor(R.color.black));
+        word.setTextColor(getResources().getColor(R.color.white));
+        compose.setTextColor(getResources().getColor(R.color.white));
+        value.setTextColor(getResources().getColor(R.color.white));
+    }
+
+    public void changeForOther(MenuItem menu){
+        LinearLayout basic = findViewById(R.id.game);
+
+        TextView word = findViewById(R.id.word);
+        TextView compose = findViewById(R.id.compose);
+        TextView value = findViewById(R.id.value);
+
+        basic.setBackgroundColor(getResources().getColor(R.color.blue));
+        word.setTextColor(getResources().getColor(R.color.pink));
+        compose.setTextColor(getResources().getColor(R.color.pink));
+        value.setTextColor(getResources().getColor(R.color.pink));
     }
 }
