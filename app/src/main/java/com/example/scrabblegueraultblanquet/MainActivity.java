@@ -133,38 +133,35 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean buttonPress(Menu menu, View view) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         LinearLayout basic = findViewById(R.id.game);
 
         TextView word = findViewById(R.id.word);
         TextView compose = findViewById(R.id.compose);
         TextView value = findViewById(R.id.value);
-
-        switch (view.getId()){
+        // Handle item selection
+        switch (item.getItemId()) {
             case R.id.classic:
                 basic.setBackgroundColor(getResources().getColor(R.color.green));
                 word.setTextColor(getResources().getColor(R.color.black));
                 compose.setTextColor(getResources().getColor(R.color.black));
                 value.setTextColor(getResources().getColor(R.color.black));
-                break;
-
+                return true;
             case R.id.sombre:
                 basic.setBackgroundColor(getResources().getColor(R.color.black));
                 word.setTextColor(getResources().getColor(R.color.white));
                 compose.setTextColor(getResources().getColor(R.color.white));
                 value.setTextColor(getResources().getColor(R.color.white));
-                break;
-
-            case  R.id.autre:
+                return true;
+            case R.id.autre:
                 basic.setBackgroundColor(getResources().getColor(R.color.blue));
                 word.setTextColor(getResources().getColor(R.color.pink));
                 compose.setTextColor(getResources().getColor(R.color.pink));
                 value.setTextColor(getResources().getColor(R.color.pink));
-                break;
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return true;
     }
 }

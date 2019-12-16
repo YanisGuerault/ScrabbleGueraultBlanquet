@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:showAsAction="always">
 
-    <item android:id="@+id/classic" android:title="Mode Classique" android:onClick="buttonPress"/>
-    <item android:id="@+id/sombre" android:title="Mode Sombre" android:onClick="buttonPress"/>
-    <item android:id="@+id/autre" android:title="Mode Autre" android:onClick="buttonPress"/>
+    <item android:id="@+id/classic" android:title="Mode Classique"/>
+    <item android:id="@+id/sombre" android:title="Mode Sombre"/>
+    <item android:id="@+id/autre" android:title="Mode Autre"/>
 </menu>
