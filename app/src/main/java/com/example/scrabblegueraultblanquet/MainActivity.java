@@ -2,21 +2,16 @@ package com.example.scrabblegueraultblanquet;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -29,37 +24,56 @@ import java.util.*;
 public class MainActivity extends AppCompatActivity {
 
     private static final Handler handler = new Handler();
+    private boolean threadSearchEnable = false;
     private static Dictionary dic;
+    private ProgressBar progress;
+    private EditText edit;
+    private Button button;
     ArrayList<HashMap<String, String>> mainList = new ArrayList<>(0);
     SimpleAdapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        progress = findViewById(R.id.progressBar);
+        edit = findViewById(R.id.edit);
+        button = findViewById(R.id.button);
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_SMS}, 1);
         }
 
-        handler.postDelayed(Thread, 1000);
+        if (dic == null) {
+            handler.postDelayed(threadDico, 1000);
+            loading();
+        }
+
         setListView();
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!threadSearchEnable) {
+                    EditText myEdit = findViewById(R.id.edit);
+                    MyTask task = new MyTask();
+                    task.execute(myEdit.getText().toString().toCharArray());
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "La recherche est déjà en cours, vous ne pouvez pas la lancer deux fois", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
     }
 
-    private final Runnable Thread = new Runnable() {
+    private final Runnable threadDico = new Runnable() {
         @Override
         public void run() {
-            char[] ch = {'c', 'l', 'a', 'v', 'i', 'r', '*'};
-            ScrabbleComparator sc = new ScrabbleComparator(ch);
             dic = new Dictionary(getApplicationContext());
-            /*List<String> word = dic.getWordsThatCanBeComposed(ch);
-            String[] newWord = listToArray(word);
-            Arrays.sort(newWord,sc);
-            for(String s : newWord)
-            {
-                Log.i("Scrabble", s + " : " + sc.wordValue(s));
-            }*/
+            endLoading();
         }
     };
 
@@ -79,89 +93,107 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static <T> String[] listToArray(List<T> list) {
-        String[] array = new String[list.size()];
-        for (int i = 0; i < array.length; i++)
-            array[i] = list.get(i).toString();
-        return array;
+    private void loading() {
+        progress.setVisibility(View.VISIBLE);
+        edit.setEnabled(false);
     }
 
-    public void onSearch(View v) {
-        EditText myEdit = findViewById(R.id.edit);
-        char[] letters = myEdit.getText().toString().toCharArray();
-
-        List<String> vocabList = dic.getWordsThatCanBeComposed(letters);
-        ScrabbleComparator sc = new ScrabbleComparator(letters);
-
-        Data[] list = new Data[vocabList.size()];
-
-        int i = 0;
-        for(String s : vocabList)
-        {
-            list[i] = new Data(s,Dictionary.getComposition(s,letters));
-            i++;
-        }
-
-        Arrays.sort(list, sc);
-
-        mainList.clear();
-
-        for (Data data : list) {
-            HashMap<String, String> nlist = new HashMap<>();
-            nlist.put("word", data.word);
-            nlist.put("compose", String.valueOf(data.compose));
-            nlist.put("value", String.valueOf(ScrabbleComparator.lettersValue(data.compose)));
-            mainList.add(nlist);
-        }
-
-        adapter.notifyDataSetChanged();
-
+    private void endLoading() {
+        progress.setVisibility(View.GONE);
+        edit.setEnabled(true);
     }
 
-    void setListView()
-    {
+    void setListView() {
         ListView listView = findViewById(R.id.myList);
 
-        SimpleAdapter contact_adaptater = new SimpleAdapter(getApplicationContext(), mainList, R.layout.item_entry, new String[]{"word","compose","value"}, new int[]{R.id.word,R.id.compose,R.id.value});
+        SimpleAdapter contact_adaptater = new SimpleAdapter(getApplicationContext(), mainList, R.layout.item_entry, new String[]{"word", "compose", "value"}, new int[]{R.id.word, R.id.compose, R.id.value});
         listView.setAdapter(contact_adaptater);
         adapter = contact_adaptater;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        LinearLayout basic = findViewById(R.id.game);
-
-        TextView word = findViewById(R.id.word);
-        TextView compose = findViewById(R.id.compose);
-        TextView value = findViewById(R.id.value);
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.classic:
-                basic.setBackgroundColor(getResources().getColor(R.color.green));
-                word.setTextColor(getResources().getColor(R.color.black));
-                compose.setTextColor(getResources().getColor(R.color.black));
-                value.setTextColor(getResources().getColor(R.color.black));
+                themeUtils.THEME = R.style.ThemeClassic;
+                restartActivity();
                 return true;
             case R.id.sombre:
-                basic.setBackgroundColor(getResources().getColor(R.color.black));
-                word.setTextColor(getResources().getColor(R.color.white));
-                compose.setTextColor(getResources().getColor(R.color.white));
-                value.setTextColor(getResources().getColor(R.color.white));
+                themeUtils.THEME = R.style.ThemeSombre;
+                restartActivity();
                 return true;
             case R.id.autre:
-                basic.setBackgroundColor(getResources().getColor(R.color.blue));
-                word.setTextColor(getResources().getColor(R.color.pink));
-                compose.setTextColor(getResources().getColor(R.color.pink));
-                value.setTextColor(getResources().getColor(R.color.pink));
+                themeUtils.THEME = R.style.ThemeAutre;
+                restartActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void restartActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private class MyTask extends AsyncTask<char[], Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            loading();
+            threadSearchEnable = true;
+            mainList.clear();
+            adapter.notifyDataSetChanged();
+            TextView tv = findViewById(R.id.nbmots);
+            tv.setText("");
+        }
+
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            endLoading();
+            threadSearchEnable = false;
+            TextView tv = findViewById(R.id.nbmots);
+            tv.setText("Nombres de mots : " + integer);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected Integer doInBackground(char[]... voids) {
+            EditText myEdit = findViewById(R.id.edit);
+            char[] letters = voids[0];
+
+            List<String> vocabList = dic.getWordsThatCanBeComposed(letters);
+            ScrabbleComparator sc = new ScrabbleComparator(letters);
+
+            Data[] list = new Data[vocabList.size()];
+
+            int i = 0;
+            for (String s : vocabList) {
+                list[i] = new Data(s, Dictionary.getComposition(s, letters));
+                i++;
+            }
+
+            Arrays.sort(list, sc);
+
+            mainList.clear();
+
+            for (Data data : list) {
+                HashMap<String, String> nlist = new HashMap<>();
+                nlist.put("word", data.word);
+                nlist.put("compose", String.valueOf(data.compose));
+                nlist.put("value", String.valueOf(ScrabbleComparator.lettersValue(data.compose)));
+                mainList.add(nlist);
+            }
+
+            return vocabList.size();
         }
     }
 }

@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/game"
-    android:background="@color/green">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:id="@+id/game">
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:orientation="horizontal"
-        android:weightSum="12">
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:orientation="horizontal"
+            android:weightSum="12">
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:id="@+id/edit"></EditText>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:id="@+id/edit"></EditText>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Search"
-            android:layout_weight="6"
-            android:onClick="onSearch"></Button>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:layout_weight="6"
+                android:id="@+id/button"></Button>
     </LinearLayout>
 
     <!--<ProgressBar
         android:id="@+id/simpleProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />-->
+
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:indeterminate="true"
+            android:visibility="invisible"/>
+
+    <TextView
+            android:id="@+id/nbmots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text=""
+            android:layout_marginBottom="15dp"
+    />
 
     <include layout="@layout/list"/>
 

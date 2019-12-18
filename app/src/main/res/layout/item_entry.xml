@@ -2,34 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="match_parent">
 
     <TextView
             android:id="@+id/word"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:layout_marginRight="15dp"
-            android:textColor="@color/black"
+            android:textAlignment="center"
             />
     <TextView
             android:id="@+id/compose"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:layout_marginRight="15dp"
-            android:textColor="@color/black"
+            android:textAlignment="center"
     />
+
     <TextView
             android:id="@+id/value"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_weight="1"
-            android:layout_marginRight="15dp"
-            android:textColor="@color/black"
+            android:textAlignment="center"
     />
 
 </LinearLayout>

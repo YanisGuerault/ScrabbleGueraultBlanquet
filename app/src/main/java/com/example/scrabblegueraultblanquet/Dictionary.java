@@ -28,13 +28,11 @@ public class Dictionary {
         String line;
         try {
             line = br.readLine();
-            int max = 50000;
-            Log.i("Scrabble-Dic-Create", line);
-            wordList = new String[max];
+            //int max = 50000;
+            wordList = new String[Integer.parseInt(line)];
             int i = 0;
 
-            while ((line = br.readLine()) != null && i < max) {
-                Log.i("Scrabble-Dic-Create",String.valueOf(i));
+            while ((line = br.readLine()) != null /*&& i < max*/) {
                 wordList[i] = line;
                 i++;
             }
@@ -122,7 +120,6 @@ public class Dictionary {
     public List<String> getWordsThatCanBeComposed(char[] letters) {
         LinkedList<String> result = new LinkedList<>();
         for (String word : wordList) {
-            Log.i("Scrabble-getWord",word);
             if (mayBeComposed(word, letters))
                 result.add(word);
         }
